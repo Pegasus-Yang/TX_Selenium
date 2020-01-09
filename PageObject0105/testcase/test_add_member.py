@@ -27,16 +27,7 @@ class TestIndexAddMember:
                               inter, mobil, phone, email, addr,
                               group, duty, identity, leadergroup,
                               out_duty, inv, sendinvite):
-        print('\n==============================11111111111111===================================\n')
-        print(self.index.get_title())
-        print(self.index.get_url())
-        print('\n===============================11111111111111==================================\n')
-        self.add_member = self.index.go_add_member_page()
-        print('\n==============================222222222222222===================================\n')
-        print(self.add_member.get_url())
-        print(self.add_member.get_title())
-        print('\n==============================222222222222222===================================\n')
-        self.add_member.add_member_info(
+        self.index.go_add_member_page().add_member_info(
             username=username, userid=userid, nickname=nickname, sex=sex,
             inter=inter, mobil=mobil, phone=phone, email=email, addr=addr,
             group=group, duty=duty, identity=identity, leadergroup=leadergroup,

@@ -14,6 +14,7 @@ class AddMemberInfoPage(BasePage):
                         inter=None, mobil=None, phone=None, email=None, addr=None,
                         group=None, duty=None, identity=None, leadergroup=None,
                         out_duty=None, inv=None, sendinvite=None):
+        """添加成员页面详细数据填写"""
         """
         添加成员页面的填写成员信息
         测试用户数据完整格式(照片上传方式搞不定暂不考虑)：
