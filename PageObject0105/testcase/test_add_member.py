@@ -17,7 +17,7 @@ class TestIndexAddMember:
         pass
 
     def teardown(self):
-        self.index.quit()
+        self.index.quit_driver()
 
     @pytest.mark.parametrize('username, userid, nickname, sex,'
                              'inter,mobil,phone, email, addr,'

@@ -9,7 +9,8 @@ from PageObject0105.tools.login_tools import use_cookies_login, is_login_cookies
 
 
 class BasePage:
-"""所有页面的基类，定义一些公共方法供所有页面使用"""
+    """所有页面的基类，定义一些公共方法供所有页面使用"""
+
     def __init__(self, driver: WebDriver = None):
         if driver is None:
             # option = Options()
@@ -33,7 +34,7 @@ class BasePage:
         """返回当前页面的Title"""
         return self._driver.title
 
-    def quit(self):
+    def quit_driver(self):
         """在10秒后关闭浏览器"""
         sleep(10)
         self._driver.quit()
