@@ -3,12 +3,20 @@
 from selenium.webdriver.common.by import By
 
 from PageObject0105.page.base_page import BasePage
-from PageObject0105.tools.add_member_tools import select_inter, select_checkbox
-from PageObject0105.tools.common_tools import clear_send_keys, select_radio
 
 
 class AddMemberInfoPage(BasePage):
+    """添加成员页面(frame#contacts)"""
     _url = 'https://work.weixin.qq.com/wework_admin/frame#contacts'
+
+    def _select_inter(self, inter):
+        """从国际区号列表中选择输入的国际区号"""
+        inter_list = (By.CSS_SELECTOR, '.ww_telInput_zipCode_input .qui_inputText.ww_inputText')
+        inter_num = (By.CSS_SELECTOR, '[data-value="{}"]'.format(inter))
+        self.clickable_wait(inter_list)
+        self.find_element(inter_list).click()
+        self.clickable_wait(inter_num)
+        self.find_element(inter_num).click()
 
     def add_member_info(self, username=None, userid=None, nickname=None, sex=None,
                         inter=None, mobil=None, phone=None, email=None, addr=None,
@@ -24,20 +32,20 @@ class AddMemberInfoPage(BasePage):
         对外职务(0同步公司内职务 1自定义),自定义职务,是否通过邮件或短信发送企业邀请(0否 1是)
         """
         # todo 上传照片
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#username', username)  # 姓名
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_english_name', nickname)  # 别名
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_acctid', userid)  # 账号
-        select_radio(self._driver, By.CSS_SELECTOR, '[name="gender"]', sex)  # 性别
-        select_inter(self._driver, inter)  # 国际区号
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_phone', mobil)  # 手机号
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_telephone', phone)  # 座机号
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_mail', email)  # 邮箱
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberEdit_address', addr)  # 地址
+        self.clear_send_keys(By.CSS_SELECTOR, '#username', username)  # 姓名
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_english_name', nickname)  # 别名
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_acctid', userid)  # 账号
+        self.double_radio_select_right(By.CSS_SELECTOR, '[name="gender"]', sex)  # 性别
+        self._select_inter(inter)  # 国际区号
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_phone', mobil)  # 手机号
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_telephone', phone)  # 座机号
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_mail', email)  # 邮箱
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberEdit_address', addr)  # 地址
         # todo 部门选择
-        clear_send_keys(self._driver, By.CSS_SELECTOR, '#memberAdd_title', duty)  # 职务
-        select_radio(self._driver, By.CSS_SELECTOR, '[name="identity_stat"]', identity)  # 身份
+        self.clear_send_keys(By.CSS_SELECTOR, '#memberAdd_title', duty)  # 职务
+        self.double_radio_select_right(By.CSS_SELECTOR, '[name="identity_stat"]', identity)  # 身份
         # todo 身份-上级身份部门选择
-        select_radio(self._driver, By.CSS_SELECTOR, '[name="extern_position_set"]', out_duty)  # 对外职务
+        self.double_radio_select_right(By.CSS_SELECTOR, '[name="extern_position_set"]', out_duty)  # 对外职务
         if out_duty == 1:
-            clear_send_keys(self._driver, By.CSS_SELECTOR, '[name="extern_position"]', inv)  # 对外职务-自定义输入
-        select_checkbox(self._driver, By.CSS_SELECTOR, '[name="sendInvite"]', sendinvite)  # 通过邮件或短信发送企业邀请
+            self.clear_send_keys(By.CSS_SELECTOR, '[name="extern_position"]', inv)  # 对外职务-自定义输入
+        self.select_checkbox(By.CSS_SELECTOR, '[name="sendInvite"]', sendinvite)  # 通过邮件或短信发送企业邀请

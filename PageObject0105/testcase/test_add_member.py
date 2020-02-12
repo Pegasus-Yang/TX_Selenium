@@ -14,7 +14,6 @@ userinfo = [
 class TestIndexAddMember:
     def setup(self):
         self.index = IndexPage()
-        pass
 
     def teardown(self):
         self.index.quit_driver()
@@ -27,7 +26,7 @@ class TestIndexAddMember:
                               inter, mobil, phone, email, addr,
                               group, duty, identity, leadergroup,
                               out_duty, inv, sendinvite):
-        self.index.go_add_member_page().add_member_info(
+        self.index.goto_add_member_page().add_member_info(
             username=username, userid=userid, nickname=nickname, sex=sex,
             inter=inter, mobil=mobil, phone=phone, email=email, addr=addr,
             group=group, duty=duty, identity=identity, leadergroup=leadergroup,

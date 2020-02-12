@@ -8,7 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 
 
-def save_login_cookies(driver: WebDriver = None):
+def login_and_save_cookies(driver: WebDriver = None):
     """打开登陆页面，登陆后抓取cookies信息保存下来以便之后自动登陆使用"""
     if driver is None:
         driver = webdriver.Chrome()
@@ -23,7 +23,7 @@ def save_login_cookies(driver: WebDriver = None):
 
 
 def use_cookies_login(driver: WebDriver):
-    """加载文件中的cookies信息，进入登陆状态"""
+    """加载wxcookies.pickle文件中的cookies信息，进入登陆状态"""
     driver.get('https://work.weixin.qq.com/wework_admin/frame#index')
     with open('../data/wxcookies.pickle', 'rb') as cookies_file:
         cookies = pickle.load(cookies_file)
@@ -34,7 +34,7 @@ def use_cookies_login(driver: WebDriver):
 
 
 def is_login_cookies_work() -> bool:
-    """通过保存下来的cookies中的过期时间判断cookies是否还有效"""
+    """通过保存在wxcookies.pickle文件中的cookies中的过期时间判断cookies是否还有效"""
     if not os.path.exists('../data/wxcookies.pickle'):
         return False
     with open('../data/wxcookies.pickle', 'rb') as cookies_file:
