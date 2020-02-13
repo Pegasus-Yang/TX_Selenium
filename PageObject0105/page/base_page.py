@@ -29,14 +29,6 @@ class BasePage:
         else:
             self._driver = driver
 
-    def find_element(self, locator) -> WebElement:
-        """封装selenium的find_element方法"""
-        return self._driver.find_element(*locator)
-
-    def find_elements(self, locator) -> list:
-        """封装selenium的find_elements方法"""
-        return self._driver.find_elements(*locator)
-
     def get_url(self) -> str:
         """返回当前页面的URL"""
         return self._driver.current_url
@@ -45,34 +37,47 @@ class BasePage:
         """返回当前页面的Title"""
         return self._driver.title
 
-    def quit_driver(self):
+    def quit_driver(self, delay=10):
         """在10秒后关闭浏览器"""
-        sleep(10)
+        sleep(delay)
         self._driver.quit()
 
-    def wait_load(self, pf=0.5, maxtime=10) -> WebDriverWait:
+    def _find_element(self, locator: tuple) -> WebElement:
+        """封装selenium的find_element方法"""
+        return self._driver.find_element(*locator)
+
+    def _find_elements(self, locator: tuple) -> list:
+        """封装selenium的find_elements方法"""
+        return self._driver.find_elements(*locator)
+
+    def _click_element(self, locator: tuple):
+        """对元素进行clickable显式等待、并在结束后点击元素"""
+        self._clickable_wait(locator)
+        self._find_element(locator).click()
+
+    def _wait_load(self, pf=0.5, maxtime=10) -> WebDriverWait:
         """为显式等待方法添加默认值"""
         return WebDriverWait(self._driver, maxtime, poll_frequency=pf)
 
-    def clickable_wait(self, locator) -> bool:
+    def _clickable_wait(self, locator: tuple) -> bool:
         """进行元素clickable判断的显式等待"""
-        self.wait_load().until(expected_conditions.element_to_be_clickable(locator))
+        self._wait_load().until(expected_conditions.element_to_be_clickable(locator))
         return True
 
-    def clear_send_keys(self, locator, sendstr):
+    def _clear_send_keys(self, locator, sendstr):
         """输入框显式等待、清理和字符串输入"""
-        if self.clickable_wait(locator):
-            self.find_element(locator).clear()
-            self.find_element(locator).send_keys(sendstr)
+        if self._clickable_wait(locator):
+            self._find_element(locator).clear()
+            self._find_element(locator).send_keys(sendstr)
 
-    def double_radio_select_right(self, locator, is_right):
+    def _double_radio_select_right(self, locator, is_right):
         """成对的单选按钮组操作，is_right为True即为选择右边的按钮，False即为选择左边"""
-        if self.clickable_wait(locator):
-            self.find_elements(locator)[1].click() if is_right else \
-                self.find_elements(locator)[0].click()
+        if self._clickable_wait(locator):
+            self._find_elements(locator)[1].click() if is_right else \
+                self._find_elements(locator)[0].click()
 
-    def select_checkbox(self, locator, select):
+    def _select_checkbox(self, locator, select):
         """复选框操作，select为True则选中复选框，False则不选中"""
-        if self.clickable_wait(locator):
-            if select ^ self.find_element(locator).is_selected():
-                self.find_element(locator).click()
+        if self._clickable_wait(locator):
+            if select ^ self._find_element(locator).is_selected():
+                self._find_element(locator).click()

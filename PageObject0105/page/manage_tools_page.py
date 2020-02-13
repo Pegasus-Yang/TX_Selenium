@@ -29,8 +29,7 @@ class ManageToolsPage(BasePage):
 
     def goto_material_page(self):
         """跳转至素材库页面"""
-        self.clickable_wait(self._material_page)
-        self.find_element(self._material_page).click()
+        self._click_element(self._material_page)
         return MaterialPage(self._driver)
 
     def goto_interior_page(self):
