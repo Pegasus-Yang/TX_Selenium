@@ -1,5 +1,7 @@
 # Author:Pegasus-Yang
 # Time:2020/1/5 20:01
+from time import sleep
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -77,9 +79,33 @@ class AddMemberInfoPage(BasePage):
         address_locator = (By.CSS_SELECTOR, '#memberEdit_address')
         self._clear_send_keys(address_locator, address)
 
-    def set_department(self, department):
-        """设置部门"""
-        pass
+    def set_department(self, department, major_department=None):
+        """设置部门，department为List可以设置选择多个部门，major_department是用来设置为主部门的"""
+        department_edit_locator = (By.CSS_SELECTOR, '.ww_groupSelBtn_add.js_show_party_selector')
+        department_select_list = (By.CSS_SELECTOR, '.multiPickerDlg_right li')
+        department_search_input_locator = (By.CSS_SELECTOR, '[placeholder="搜索部门"]')
+        department_search_result_locator = (By.CSS_SELECTOR, '.multiPickerDlg_left_cnt .ww_searchResult ul li')
+        department_save_locator = (By.CSS_SELECTOR, '.qui_btn.ww_btn.ww_btn_Blue.js_submit')
+        select_list = []
+        self._click_element(department_edit_locator)
+        for element in self._find_elements(department_select_list):
+            select_list.append(element.find_elements(By.TAG_NAME, 'span')[1].text)
+        if major_department not in select_list:
+            self._clear_send_keys(department_search_input_locator, major_department)
+            sleep(1)
+            self._click_element(department_search_result_locator)
+        for depart in department:
+            if depart in select_list:
+                continue
+            self._clear_send_keys(department_search_input_locator, depart)
+            sleep(1)
+            self._click_element(department_search_result_locator)
+        for e in self._find_elements(department_select_list):
+            if (e.find_elements(By.TAG_NAME, 'span')[1].text == major_department) and (
+                    e.find_elements(By.TAG_NAME, 'span')[2].text != '主部门'):
+                self._driver.execute_script('arguments[0].click()', e.find_elements(By.TAG_NAME, 'span')[2])
+                break
+        self._click_element(department_save_locator)
 
     def set_duty(self, duty):
         """设置职务"""

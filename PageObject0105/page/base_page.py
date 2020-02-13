@@ -3,6 +3,7 @@
 from time import sleep
 
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions
@@ -49,6 +50,9 @@ class BasePage:
     def _find_elements(self, locator: tuple) -> list:
         """封装selenium的find_elements方法"""
         return self._driver.find_elements(*locator)
+
+    def _move_to_element(self, element):
+        return ActionChains(self._driver).move_to_element(element)
 
     def _click_element(self, locator: tuple):
         """对元素进行clickable显式等待、并在结束后点击元素"""
