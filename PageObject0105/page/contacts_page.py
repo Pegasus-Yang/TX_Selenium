@@ -10,9 +10,12 @@ class ContactsPage(BasePage):
     _url = 'https://work.weixin.qq.com/wework_admin/frame#contacts'
 
     def _get_user_list_text(self, element):
+        """获取元素下span标签中的值"""
         return element.find_element(By.TAG_NAME, 'span').text
 
-    def get_user_list(self):
+    def get_user_list(self) -> list:
+        """获取当前页面用户列表中的信息，并以数组方式返回"""
+
         class User:
             name = ''
             duty = ''
@@ -34,3 +37,5 @@ class ContactsPage(BasePage):
             user.email = self._get_user_list_text(info[5])
             result.append(user)
         return result
+
+

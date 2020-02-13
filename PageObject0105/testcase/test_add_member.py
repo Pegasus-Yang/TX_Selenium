@@ -10,12 +10,13 @@ user_info = ['../data/天马.jpg', 'aa', 'aa', 'tianma0002', '女', '86', '10012
 
 
 class TestIndexAddMember:
+    """从首页进入添加成员页面进行成员添加的用例"""
     def setup(self):
         self.index_page = IndexPage()
 
     def teardown(self):
         pass
-        # self.index.quit_driver()
+        self.index.quit_driver()
 
     def test_from_index_add_member(self):
         add_member_page = self.index_page.goto_add_member_page()

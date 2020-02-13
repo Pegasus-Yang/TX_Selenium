@@ -10,6 +10,7 @@ class AddMemberInfoPage(BasePage):
     """添加成员页面"""
 
     def __init__(self, driver: WebDriver = None, enter_page=None):
+        """重载父类初始化方法，添加进入页的记录，期望能解决页面互相import问题"""
         super().__init__(driver)
         self._enter_page = enter_page
 
