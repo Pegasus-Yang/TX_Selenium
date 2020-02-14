@@ -13,7 +13,7 @@ class TestEditMember:
 
     def teardown(self):
         pass
-        # self.contacts_page.quit_driver()
+        self.contacts_page.quit_driver()
 
     def test_from_member_info_edit_member(self):
         edit_member_page = self.contacts_page.goto_member_info('aaa').goto_edit_member_page()

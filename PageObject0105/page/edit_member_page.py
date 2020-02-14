@@ -12,6 +12,25 @@ class EditMemberPage(BasePage):
         super(EditMemberPage, self).__init__(driver)
         self._enter_page = enter_page
 
+    def _clear_send_keys(self, locator, sendstr):
+        """输入框显式等待、清理和字符串输入"""
+        if self._clickable_wait(locator):
+            self._find_element(locator).clear()
+            self._find_element(locator).send_keys(sendstr)
+
+    def _double_radio_select_right(self, locator, is_right):
+        """成对的单选按钮组操作，is_right为True即为选择右边的按钮，False即为选择左边"""
+        if self._clickable_wait(locator):
+            self._find_elements(locator)[1].click() if is_right else \
+                self._find_elements(locator)[0].click()
+
+    def _select_checkbox(self, locator, select):
+        """复选框操作，select为True则选中复选框，False则不选中"""
+        if self._clickable_wait(locator):
+            if select ^ self._find_element(locator).is_selected():
+                self._find_element(locator).click()
+
+
     def _select_inter(self, inter):
         """从国际区号列表中选择输入的国际区号"""
         inter_list = (By.CSS_SELECTOR, '.ww_telInput_zipCode_input .qui_inputText.ww_inputText')
